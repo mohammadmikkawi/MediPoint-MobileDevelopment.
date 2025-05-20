@@ -49,7 +49,7 @@ return Center(
   @override
   Widget build(BuildContext context) {
 return Container(
-width:390,
+width:MediaQuery.of(context).size.width*0.9,
 height: 50,
 child: TextField(
 controller:controller ,
@@ -73,9 +73,10 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: num3,
+        width: MediaQuery.of(context).size.width*0.5,
+
         child:
-        ElevatedButton(onPressed: ()
+          ElevatedButton(onPressed: ()
         {
             onPressed();
         },
@@ -98,7 +99,8 @@ class Button extends StatelessWidget {
 class ortext extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-return Center(
+return Padding(
+  padding: EdgeInsets.only(top: 1),
   child: Text("OR",style:TextStyle(
     color: Colors.black,
     fontSize:20
@@ -112,7 +114,8 @@ return Center(
 class Signupwithtext extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Padding(
+      padding: EdgeInsets.only(top: 3),
       child: Text("Sign Up With:",style:TextStyle(
           color: Colors.black,
           fontSize:17
@@ -128,7 +131,8 @@ class Signupwithtext extends StatelessWidget{
 class icons extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-return Container(
+return Padding(
+padding: EdgeInsets.only(top:1),
   child: Row(
     mainAxisAlignment:MainAxisAlignment.center ,
     children: [
@@ -178,8 +182,6 @@ style: ElevatedButton.styleFrom(
 }
 
 
-
-
 //Main Feature
 class Signup extends StatelessWidget{
   final TextEditingController _fullNameController = TextEditingController();
@@ -190,66 +192,63 @@ class Signup extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-body:Column(
-  children: [
-   Titleofpage(),
-    Logo(200,150),
-    SizedBox(height: 1,),
-Field(hinttext: "Full Name",controller:_fullNameController),
-SizedBox(height: 12,),
-    Field(hinttext: "Enter Your Email",controller:_emailController ,),
-    SizedBox(height: 12,),
-    Field(hinttext: "Enter Your Phone Number",controller: _phoneController,),
-    SizedBox(height: 12,),
-    Field(hinttext: "Enter Your Password",controller: _passwordController,),
-    SizedBox(height: 12,),
-    Field(hinttext: "Confirm Password",controller: _confirmPasswordController,),
-    SizedBox(height: 20,),
+    return Scaffold(
+        body:Column(
+          children: [
+            Titleofpage(),
+            Logo(170,150),
+            SizedBox(height: 1,),
+            Field(hinttext: "Full Name",controller:_fullNameController),
+            SizedBox(height: 12,),
+            Field(hinttext: "Enter Your Email",controller:_emailController ,),
+            SizedBox(height: 12,),
+            Field(hinttext: "Enter Your Phone Number",controller: _phoneController,),
+            SizedBox(height: 12,),
+            Field(hinttext: "Enter Your Password",controller: _passwordController,),
+            SizedBox(height: 12,),
+            Field(hinttext: "Confirm Password",controller: _confirmPasswordController,),
+            SizedBox(height: 20,),
 
 
-Button("Sign Up", 200,onPressed:(){
-  try {
+            Button("Sign Up", 200,onPressed:(){
+              try {
 
-    String fullName = _fullNameController.text;
-    String email2=_emailController.text;
-String phone2=_phoneController.text;
-int phone=int.parse(phone2);
-String password2=_passwordController.text;
-String password3=_confirmPasswordController.text;
+                String fullName = _fullNameController.text;
+                String email2=_emailController.text;
+
+                String phone2=_phoneController.text;
+                int phone=int.parse(phone2);
+                String password2=_passwordController.text;
+                String password3=_confirmPasswordController.text;
 
 
-SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
-service.process();
-print("done");
-service.checkEmail();
-service.checkPassword2();
-service.checkPasswordEquility();
-  }
+                SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
+                service.process();
+                print("done");
+                service.checkEmail();
+                service.checkPassword2();
+                service.checkPasswordEquility();
+              }
 
-  catch(e){
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Please fill all fields or check your email.")),
+              catch(e){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Please fill all fields or check your email.")),
 
+                );
+              }
+            }
+              ,),
+            SizedBox(height: 6,),
+            ortext(),
+            SizedBox(height: 5,),
+            Signupwithtext(),
+            SizedBox(height: 5,),
+            icons(),
+            SizedBox(height: 2,),
+            Flowbutton(Login(),"Log in Page",15,200),
+
+          ],
+        )
     );
-  }
-
-
-}
-  ,),
-    SizedBox(height: 20,),
-    SizedBox(height: 25,),
-    SizedBox(height: 18,),
-    ortext(),
-    SizedBox(height: 5,),
-    Signupwithtext(),
-    SizedBox(height: 10,),
-   icons(),
-    SizedBox(height: 20,),
-   Flowbutton(Login(),"Log in Page",15,200),
-
-  ],
-)
-   );
   }
 }

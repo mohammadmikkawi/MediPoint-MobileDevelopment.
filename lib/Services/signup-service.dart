@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:training_1/Widgets/Signup.dart';
 
 
-
 class SignupService {
   String name;
   String email;

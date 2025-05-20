@@ -31,10 +31,11 @@ return Container(
    @override
   Widget build(BuildContext context) {
 return Scaffold(
+    resizeToAvoidBottomInset: true,
 body:Column(
   children: [
-    SizedBox(height:100),
-Logo(300, 300),
+    SizedBox(height:80),
+Logo(250, 250),
 SizedBox(width: 20,),
 Description(),
 SizedBox(height:30 ,width:44 ,),

@@ -8,7 +8,7 @@ void main(){
 
  runApp(
 MaterialApp(
-home:WelcomPage()
+home:WelcomPage(),
 )
  );
 }

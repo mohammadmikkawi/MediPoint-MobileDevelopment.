@@ -61,39 +61,35 @@ Navigator.push(context,//مكاني الحالي
    final TextEditingController _emailController = TextEditingController();
    final TextEditingController _passwordController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
         body:Stack(
           children: [
             SingleChildScrollView(
             child: Column(
             children: [
-              SizedBox(height: 20,),
+              SizedBox(height: 5,),
             Titleofpage2(),
             SizedBox(height: 5,),
-            Logo(300,300),
-            SizedBox(height: 0,),
+            Logo(250,250),
+            SizedBox(height: 1,),
  Field (hinttext: "Enter your Email",controller:_emailController),
             SizedBox(height: 10,),
             Field (hinttext: "Enter your Password",controller: _passwordController,),
             SizedBox(height: 10,),
 Doyouforgetyourpassword("Forget Password?",Forgetpassword()),
-            SizedBox(height: 15,),
-Button("Log in",300,onPressed: (){
-
-
-
-
+            SizedBox(height: 10,),
+Button("Log in",500,onPressed: (){
 },),
-            SizedBox(height: 25,),
-            ortext(),
             SizedBox(height: 20,),
+            ortext(),
+            SizedBox(height: 1,),
             icons(),
-            SizedBox(height: 25,),
+            SizedBox(height: 10,),
 Text2(),
-            SizedBox(height: 2,),
+            SizedBox(height: 1,),
             Flowbutton(Signup(),"Sign Up Page",15,200)
           ]
     )

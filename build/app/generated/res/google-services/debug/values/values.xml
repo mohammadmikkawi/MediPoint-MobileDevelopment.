@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">368312545750</string>
+    <string name="google_api_key" translatable="false">AIzaSyCByIVh1G8ZPRPkOe2dfrP6_ufXUAEbc_w</string>
+    <string name="google_app_id" translatable="false">1:368312545750:android:9c2e0d1da8ccee8e8af477</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCByIVh1G8ZPRPkOe2dfrP6_ufXUAEbc_w</string>
+    <string name="google_storage_bucket" translatable="false">midypoint-app.firebasestorage.app</string>
+    <string name="project_id" translatable="false">midypoint-app</string>
+</resources>
