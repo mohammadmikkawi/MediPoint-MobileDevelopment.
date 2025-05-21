@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:training_1/Services/signup-service.dart';
 import 'package:training_1/Widgets/login.dart';
 import 'package:flutter/services.dart';
+import 'package:training_1/db/auth_service.dart';
 
 //Widget 1
 class Titleofpage extends StatelessWidget{
@@ -210,12 +211,12 @@ class Signup extends StatelessWidget{
             SizedBox(height: 20,),
 
 
-            Button("Sign Up", 200,onPressed:(){
+            Button("Sign Up", 200,
+              onPressed:() async {
               try {
 
                 String fullName = _fullNameController.text;
                 String email2=_emailController.text;
-
                 String phone2=_phoneController.text;
                 int phone=int.parse(phone2);
                 String password2=_passwordController.text;
@@ -223,11 +224,31 @@ class Signup extends StatelessWidget{
 
 
                 SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
-                service.process();
-                print("done");
-                service.checkEmail();
-                service.checkPassword2();
+                //processing steps
+                service.notNull();
                 service.checkPasswordEquility();
+                service.checkPassword;
+                service.checkEmail();
+
+print("Processing Is Done!");
+
+   bool succes =await service.sendDatatoAuthServes();
+   if(succes){
+ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+      content: Text("Account is created Seccsufully"),
+backgroundColor:Colors.green,
+  )
+);
+   }
+   else{
+     ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(content: Text("Account Not created"),
+       backgroundColor: Colors.red,
+     )
+     );
+   }
+
               }
 
               catch(e){

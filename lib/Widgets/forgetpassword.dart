@@ -45,9 +45,6 @@ SizedBox(height: 30,),
 Button("Send", 200,onPressed: (){
 
 
-
-
-
 },),
     SizedBox(height: 250,),
 Doyouforgetyourpassword("Log in Page",Login()),
