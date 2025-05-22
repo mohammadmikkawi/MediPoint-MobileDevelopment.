@@ -11,16 +11,15 @@ class LoginService{
 
   LoginService(this.email,this.password );
 
-  void notNull() {
-    if (email == null  || password == null ||
-        password == null) {
-      throw Exception("data is empty!");
-    }
-  }
 
-  void check(){
-    print(email);
-    print(password);
+  bool notNull() {
+    if (email == null || email!.isEmpty ||
+        password == null || password!.isEmpty){
+      return false;
+    }
+    else{
+    return true;
+    }
   }
 
   bool checkEmail()

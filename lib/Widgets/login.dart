@@ -90,7 +90,17 @@ Button("Log in",500,
       String passwordLog = _passwordController.text;
 
       LoginService loginn = LoginService(emailLog, passwordLog);
-      loginn.check();
+      bool tery3=loginn.notNull();
+
+      if(!tery3){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("The empty value is invalid."),
+              backgroundColor:Colors.red,
+            )
+        );
+      }
+
       print("data sent");
       loginn.notNull();
       loginn.checkEmail();

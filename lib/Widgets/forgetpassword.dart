@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:training_1/Services/forgetpassword_service.dart';
 import 'package:training_1/Widgets/Signup.dart';
 import 'login.dart';
 
@@ -25,7 +26,6 @@ return Container(
 
 
  class Forgetpassword extends StatelessWidget{
-
     TextEditingController _eamil=TextEditingController();
 
    @override
@@ -42,9 +42,51 @@ SizedBox(height:30 ,width:44 ,),
 Field(hinttext: "Enter Your Email",controller: _eamil,),
 
 SizedBox(height: 30,),
-Button("Send", 200,onPressed: (){
+Button("Send", 200,onPressed: () async
+{
 
+  try {
+    String emailForgeted = _eamil.text;
+    ForgetPasswordService forgetpassword = ForgetPasswordService(emailForgeted);
 
+bool tery= forgetpassword.notNull();
+
+    if(!tery){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text("The empty value is invalid."),
+              backgroundColor:Colors.red,
+          )
+      );
+    }
+    forgetpassword.Cheked();
+    print("Data Sent!");
+    forgetpassword.checkEmail();
+    print("Data Processed!");
+
+bool tery4=await forgetpassword.sendDt();
+if(tery4){
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Password reset link sent! Check your email."),
+        backgroundColor:Colors.green,
+      )
+  );
+}
+else{
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Failed to send reset link."),
+        backgroundColor:Colors.red,
+      )
+
+  );
+}
+  }
+   catch(e){
+     ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text("Please Check Your Email!")),
+     );
+   }
 },),
     SizedBox(height: 250,),
 Doyouforgetyourpassword("Log in Page",Login()),

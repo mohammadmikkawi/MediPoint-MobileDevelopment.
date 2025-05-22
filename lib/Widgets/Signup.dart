@@ -224,7 +224,16 @@ class Signup extends StatelessWidget{
 
                 SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
                 //processing steps
-                service.notNull();
+
+               bool tery2= service.notNull();
+               if(!tery2){
+                 ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                       content: Text("The empty value is invalid."),
+                       backgroundColor:Colors.red,
+                     )
+                 );
+               }
                 service.checkPasswordEquility();
                 service.checkPassword;
                 service.checkEmail();

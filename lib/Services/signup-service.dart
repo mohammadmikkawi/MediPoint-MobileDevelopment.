@@ -12,16 +12,17 @@ String checkPassword;
 
 SignupService({required this.name,required this.email,required this.phoneNumber, required this.password,required this.checkPassword});
 
-void notNull() {
-  if (name == null || email ==null || phoneNumber == null ||
-      password == null) {
-    throw Exception("data is empty!");
+  bool notNull() {
+    if (name == null || name!.isEmpty ||
+        email == null || email!.isEmpty ||
+        password == null || password!.isEmpty ) {
+      return false;
+    }
+    return true;
   }
-  else {
 
-  }
-}
-bool checkEmail()
+
+  bool checkEmail()
   {
 if (email.contains('@')&&email.contains('.')){
   return true;
