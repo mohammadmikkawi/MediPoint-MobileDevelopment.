@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:training_1/Services/login-service.dart';
 import 'package:training_1/Widgets/WelcomePage.dart';
 import 'package:training_1/Widgets/forgetpassword.dart';
 import 'Signup.dart';
@@ -80,21 +81,49 @@ Navigator.push(context,//مكاني الحالي
             Field (hinttext: "Enter your Password",controller: _passwordController,),
             SizedBox(height: 10,),
 Doyouforgetyourpassword("Forget Password?",Forgetpassword()),
-            SizedBox(height: 10,),
-Button("Log in",500,onPressed: (
+              SizedBox(height: 10,),
+
+Button("Log in",500,
+  onPressed:() async {
+    try {
+      String emailLog = _emailController.text;
+      String passwordLog = _passwordController.text;
+
+      LoginService loginn = LoginService(emailLog, passwordLog);
+      loginn.check();
+      print("data sent");
+      loginn.notNull();
+      loginn.checkEmail();
+      loginn.checkPassword2();
+print("Processing Done!");
+loginn.SendDataToLoginAutherSarver();
+print("Data sent to Auth_login_service");
+
+bool success=await  loginn.SendDataToLoginAutherSarver();
+if(success)
+  {
+    Navigator.push(context,//مكاني الحالي
+      MaterialPageRoute(builder:(context)=>WelcomPage()),
+    );
+  }
+else{
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Login Field"),
+        backgroundColor: Colors.red,
+      )
+  );
 
 
-
-
-
-
-
-
-
-
-
-    ){
-},),
+}
+    }
+    catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+SnackBar(content:Text("Check your email or password.")
+          )
+      );
+    }
+  },
+),
             SizedBox(height: 20,),
             ortext(),
             SizedBox(height: 1,),

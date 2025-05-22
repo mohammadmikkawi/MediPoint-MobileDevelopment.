@@ -222,21 +222,19 @@ class Signup extends StatelessWidget{
                 String password2=_passwordController.text;
                 String password3=_confirmPasswordController.text;
 
-
                 SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
                 //processing steps
                 service.notNull();
                 service.checkPasswordEquility();
                 service.checkPassword;
                 service.checkEmail();
-
 print("Processing Is Done!");
 
-   bool succes =await service.sendDatatoAuthServes();
-   if(succes){
+   bool success =await service.sendDatatoAuthServes();
+   if(success){
 ScaffoldMessenger.of(context).showSnackBar(
   SnackBar(
-      content: Text("Account is created Seccsufully"),
+      content: Text("Account is created Successfully"),
 backgroundColor:Colors.green,
   )
 );
@@ -248,7 +246,6 @@ backgroundColor:Colors.green,
      )
      );
    }
-
               }
 
               catch(e){
@@ -267,7 +264,6 @@ backgroundColor:Colors.green,
             icons(),
             SizedBox(height: 2,),
             Flowbutton(Login(),"Log in Page",15,200),
-
           ],
         )
     );
