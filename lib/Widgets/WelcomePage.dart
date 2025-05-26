@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:training_1/Widgets/Signup.dart';
-import 'package:training_1/Widgets/homePage-P.dart';
 import 'package:training_1/Widgets/login.dart';
+import 'package:training_1/Widgets/homePage-P.dart';
 
 class Introduction extends StatelessWidget {
-  const Introduction({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -20,8 +18,6 @@ class Introduction extends StatelessWidget {
 }
 
 class WelcomPage extends StatelessWidget {
-  const WelcomPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

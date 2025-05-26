@@ -46,6 +46,7 @@ class AuthServer {
         'email': emaill,
         'phone number': phonee,
         'uid': UID,
+        'role': 'doctor',
       });
 
       print("User data saved to Firestore!");

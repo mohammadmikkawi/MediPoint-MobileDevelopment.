@@ -69,7 +69,7 @@ class _DoctorsGridPageState extends State<DoctorsGridPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        'Hello $name',
+                        name == 'Guest' ? 'Hello Guest' : 'Hello Dr. $name',
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,

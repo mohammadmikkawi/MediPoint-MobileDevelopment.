@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:training_1/db/auth_homePage.dart';
+import 'package:training_1/db/auth_homePage-P.dart';
 import 'package:training_1/Widgets/doctor_profile_page.dart';
 import 'package:training_1/Widgets/search.dart';
 
@@ -99,7 +99,7 @@ class _HomepageState extends State<Homepage_p> {
               ),
               const SizedBox(width: 10),
               Text(
-                'Hello $name',
+                'Hello Guest',
                 style: const TextStyle(color: Colors.black, fontSize: 16),
               ),
               const Spacer(),
@@ -135,6 +135,110 @@ class _HomepageState extends State<Homepage_p> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildDoctorList() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: doctors.length,
+        itemBuilder: (context, index) {
+          final doctor = doctors[index];
+          final isSelected = selectedIndex == index;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 12),
+              width: isSelected ? 250 : 70,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isSelected ? const Color(0xFF0277BD) : Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(color: Colors.black12, blurRadius: 4),
+                ],
+              ),
+              child:
+                  isSelected
+                      ? Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              doctor['image']!,
+                              width: 45,
+                              height: 45,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doctor['name']!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  doctor['date'] ?? '',
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              doctor['time'] ?? '',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                      : ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          doctor['image']!,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -204,7 +308,7 @@ class _HomepageState extends State<Homepage_p> {
                   selected: selectedIndex == index,
                   imagePath: doctor['image'],
                   name: doctor['name'] ?? 'Dr.Aya',
-                  date: doctor['date'] ?? '5 Jun 2024',
+                  date: doctor['date'] ?? '',
                   time: doctor['time'] ?? '12:00 PM',
                   showDetails: selectedIndex == index,
                 ),

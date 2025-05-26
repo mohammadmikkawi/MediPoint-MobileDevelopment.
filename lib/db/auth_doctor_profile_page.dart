@@ -75,3 +75,13 @@ Future<void> submitPatientBooking({
     ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
   }
 }
+
+Future<String?> getUserRole() async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return null;
+
+  final userDoc =
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+  return userDoc.data()?['role'] as String?;
+}

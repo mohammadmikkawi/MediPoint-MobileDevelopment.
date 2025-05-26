@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// homePage_D.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:training_1/db/auth_homePage-D.dart';
+import 'package:training_1/Widgets/search.dart';
 
 class homePage_D extends StatefulWidget {
   const homePage_D({super.key});
@@ -11,25 +13,21 @@ class homePage_D extends StatefulWidget {
 
 class _DoctorHomeState extends State<homePage_D> {
   int _selectedIndex = 0;
-  String name = 'Guest';
+  String name = '';
+  int selectedIndex = -1;
+
+  final List<Map<String, String>> doctors = [
+    {'name': 'Dr.Aya', 'time': '9AM to 3PM', 'image': 'assets/doctor.png'},
+    {'name': 'Dr.Maher', 'time': '9AM to 5PM', 'image': 'assets/maher.png'},
+    {'name': 'Dr.Abed', 'time': '11AM to 5PM', 'image': 'assets/abed.png'},
+  ];
 
   @override
   void initState() {
     super.initState();
-    fetchDoctorName();
-  }
-
-  Future<void> fetchDoctorName() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid != null) {
-      final doc =
-          await FirebaseFirestore.instance.collection('doctors').doc(uid).get();
-      if (doc.exists) {
-        setState(() {
-          name = doc.data()?['name'] ?? 'Guest';
-        });
-      }
-    }
+    DoctorHomeDB.fetchDoctorName().then((value) {
+      setState(() => name = value);
+    });
   }
 
   @override
@@ -37,25 +35,32 @@ class _DoctorHomeState extends State<homePage_D> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            buildHeader(),
-            const SizedBox(height: 20),
-            buildDoctorsRow(),
-            const SizedBox(height: 20),
-            buildMainImage(),
-            const SizedBox(height: 20),
-            buildInfoCards(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildCustomHeader(name.isEmpty ? "Guest" : name),
+              const SizedBox(height: 10),
+              buildDoctorsRow(),
+              const SizedBox(height: 10),
+              buildDoctorList(),
+              const SizedBox(height: 10),
+              buildMainImage(),
+              const SizedBox(height: 10),
+              buildPageIndicators(),
+              const SizedBox(height: 20),
+              buildInfoCards(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: buildBottomNav(),
     );
   }
 
-  Widget buildHeader() {
+  Widget buildCustomHeader(String name) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         color: Color(0xFF0277BD),
         borderRadius: BorderRadius.only(
@@ -63,16 +68,45 @@ class _DoctorHomeState extends State<homePage_D> {
           bottomRight: Radius.circular(40),
         ),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CircleAvatar(backgroundImage: AssetImage('assets/Profile.png')),
-          const SizedBox(width: 10),
-          Text(
-            'Hello Dr. $name',
-            style: const TextStyle(color: Colors.black, fontSize: 16),
+          Row(
+            children: [
+              const CircleAvatar(
+                radius: 25,
+                backgroundImage: AssetImage('assets/dr.png'),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Hello Dr. $name',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushReplacementNamed('/login');
+                },
+                icon: const Icon(Icons.logout, color: Colors.black),
+              ),
+              const Icon(Icons.notifications_none, color: Colors.black),
+            ],
           ),
-          const Spacer(),
-          const Icon(Icons.notifications_none, color: Colors.black),
+          const SizedBox(height: 20),
+          const Text(
+            'Haw Are You\nFeeling Today?',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
         ],
       ),
     );
@@ -88,9 +122,128 @@ class _DoctorHomeState extends State<homePage_D> {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const Spacer(),
-          const Text("See All", style: TextStyle(fontSize: 14)),
-          const Icon(Icons.arrow_forward_ios, size: 14),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DoctorsGridPage(),
+                ),
+              );
+            },
+            child: Row(
+              children: const [
+                Text("See All", style: TextStyle(fontSize: 14)),
+                SizedBox(width: 4),
+                Icon(Icons.arrow_forward_ios, size: 14),
+              ],
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget buildDoctorList() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: doctors.length,
+        itemBuilder: (context, index) {
+          final doctor = doctors[index];
+          final isSelected = selectedIndex == index;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 12),
+              width: isSelected ? 250 : 70,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isSelected ? const Color(0xFF0277BD) : Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(color: Colors.black12, blurRadius: 4),
+                ],
+              ),
+              child:
+                  isSelected
+                      ? Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              doctor['image']!,
+                              width: 45,
+                              height: 45,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  doctor['name']!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  doctor['date'] ?? '',
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              doctor['time'] ?? '',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                      : ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          doctor['image']!,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -100,10 +253,19 @@ class _DoctorHomeState extends State<homePage_D> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Image.asset(
-          'assets/doctors_image.jpg',
-        ), // غيّر اسم الصورة حسب الموجود عندك
+        child: Image.asset('assets/doctors.png'),
       ),
+    );
+  }
+
+  Widget buildPageIndicators() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.circle, size: 8, color: Colors.black54),
+        SizedBox(width: 4),
+        Icon(Icons.circle_outlined, size: 8, color: Colors.black26),
+      ],
     );
   }
 
@@ -127,6 +289,7 @@ class _DoctorHomeState extends State<homePage_D> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.grey[200],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

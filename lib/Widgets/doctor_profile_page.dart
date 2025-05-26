@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_1/db/auth_doctor_profile_page.dart';
 
@@ -30,7 +31,9 @@ class _DoctorProfilePageState extends State<DoctorProfilePage> {
           isLoading = false;
         });
       } else {
-        setState(() => isLoading = false);
+        setState(() {
+          isLoading = false;
+        });
       }
     });
   }
@@ -253,80 +256,105 @@ class DoctorProfileWidget extends StatelessWidget {
     TextEditingController location,
     TextEditingController date,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ElevatedButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Patient Information'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: name,
-                        decoration: const InputDecoration(labelText: 'Name'),
+    return FutureBuilder<String?>(
+      future: getUserRole(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const SizedBox.shrink();
+        }
+
+        final role = snapshot.data;
+        final currentUid = FirebaseAuth.instance.currentUser?.uid;
+        final doctorUid = doctorData['uid'];
+
+        if (currentUid == doctorUid || role == 'doctor') {
+          return const SizedBox.shrink();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Patient Information'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: name,
+                            decoration: const InputDecoration(
+                              labelText: 'Name',
+                            ),
+                          ),
+                          TextField(
+                            controller: phone,
+                            decoration: const InputDecoration(
+                              labelText: 'Phone',
+                            ),
+                          ),
+                          TextField(
+                            controller: email,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                            ),
+                          ),
+                          TextField(
+                            controller: location,
+                            decoration: const InputDecoration(
+                              labelText: 'Location',
+                            ),
+                          ),
+                          TextField(
+                            controller: date,
+                            decoration: const InputDecoration(
+                              labelText: 'Date',
+                            ),
+                          ),
+                        ],
                       ),
-                      TextField(
-                        controller: phone,
-                        decoration: const InputDecoration(labelText: 'Phone'),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Cancel'),
                       ),
-                      TextField(
-                        controller: email,
-                        decoration: const InputDecoration(labelText: 'Email'),
-                      ),
-                      TextField(
-                        controller: location,
-                        decoration: const InputDecoration(
-                          labelText: 'Location',
-                        ),
-                      ),
-                      TextField(
-                        controller: date,
-                        decoration: const InputDecoration(labelText: 'Date'),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await submitPatientBooking(
+                            context: context,
+                            doctorData: doctorData,
+                            name: name.text,
+                            phone: phone.text,
+                            email: email.text,
+                            location: location.text,
+                            date: date.text,
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Confirm'),
                       ),
                     ],
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancel'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await submitPatientBooking(
-                        context: context,
-                        doctorData: doctorData,
-                        name: name.text,
-                        phone: phone.text,
-                        email: email.text,
-                        location: location.text,
-                        date: date.text,
-                      );
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Confirm'),
-                  ),
-                ],
+                  );
+                },
               );
             },
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1979A9),
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF1979A9),
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: const Text(
+              'Book Appointment',
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
           ),
-        ),
-        child: const Text(
-          'Book Appointment',
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-      ),
+        );
+      },
     );
   }
 }

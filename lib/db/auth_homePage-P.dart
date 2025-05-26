@@ -12,6 +12,10 @@ class HomepageDB {
             .doc(user.uid)
             .get();
 
+    if (!doc.exists || !(doc.data()?.containsKey('name') ?? false)) {
+      return 'Guest';
+    }
+
     return doc.data()?['name'] ?? 'Guest';
   }
 
