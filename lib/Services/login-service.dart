@@ -8,13 +8,15 @@ import 'package:training_1/db/auth_service.dart';
 class LoginService{
   String email;
   String password;
+String code;
 
-  LoginService(this.email,this.password );
+  LoginService(this.email,this.password,this.code );
 
 
   bool notNull() {
     if (email == null || email!.isEmpty ||
-        password == null || password!.isEmpty){
+        password == null || password!.isEmpty ||code==null || code!.isEmpty)
+    {
       return false;
     }
     else{
@@ -42,7 +44,7 @@ class LoginService{
 Future<bool>SendDataToLoginAutherSarver()async
 {
 
- AuthServiceLogin authServiceLogin=AuthServiceLogin(email, password);
+ AuthServiceLogin authServiceLogin=AuthServiceLogin(email, password,code);
  authServiceLogin.checkDB();
 
  bool result =await authServiceLogin.login();

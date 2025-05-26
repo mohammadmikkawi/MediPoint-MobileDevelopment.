@@ -61,7 +61,7 @@ Navigator.push(context,//مكاني الحالي
 
    final TextEditingController _emailController = TextEditingController();
    final TextEditingController _passwordController = TextEditingController();
-
+final TextEditingController _codeController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,12 +74,15 @@ Navigator.push(context,//مكاني الحالي
               SizedBox(height: 5,),
             Titleofpage2(),
             SizedBox(height: 5,),
-            Logo(250,250),
+            Logo(200,200),
             SizedBox(height: 1,),
+
  Field (hinttext: "Enter your Email",controller:_emailController),
             SizedBox(height: 10,),
             Field (hinttext: "Enter your Password",controller: _passwordController,),
             SizedBox(height: 10,),
+              Field (hinttext: "Enter your Code",controller: _codeController,),
+              SizedBox(height: 10,),
 Doyouforgetyourpassword("Forget Password?",Forgetpassword()),
               SizedBox(height: 10,),
 
@@ -88,8 +91,9 @@ Button("Log in",500,
     try {
       String emailLog = _emailController.text;
       String passwordLog = _passwordController.text;
+     String securecode=_codeController.text;
 
-      LoginService loginn = LoginService(emailLog, passwordLog);
+      LoginService loginn = LoginService(emailLog, passwordLog,securecode);
       bool tery3=loginn.notNull();
 
       if(!tery3){
@@ -100,12 +104,12 @@ Button("Log in",500,
             )
         );
       }
-
       print("data sent");
       loginn.notNull();
       loginn.checkEmail();
       loginn.checkPassword2();
 print("Processing Done!");
+
 loginn.SendDataToLoginAutherSarver();
 print("Data sent to Auth_login_service");
 
@@ -122,8 +126,6 @@ else{
         backgroundColor: Colors.red,
       )
   );
-
-
 }
     }
     catch(e){
