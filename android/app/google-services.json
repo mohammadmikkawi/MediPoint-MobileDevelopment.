@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368312545750",
+    "project_id": "midypoint-app",
+    "storage_bucket": "midypoint-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368312545750:android:9c2e0d1da8ccee8e8af477",
+        "android_client_info": {
+          "package_name": "com.example.training_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCByIVh1G8ZPRPkOe2dfrP6_ufXUAEbc_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
