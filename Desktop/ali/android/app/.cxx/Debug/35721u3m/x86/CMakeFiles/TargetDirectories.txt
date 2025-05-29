@@ -1,0 +1,2 @@
+C:/Users/aliya/Desktop/ali/android/app/.cxx/Debug/35721u3m/x86/CMakeFiles/edit_cache.dir
+C:/Users/aliya/Desktop/ali/android/app/.cxx/Debug/35721u3m/x86/CMakeFiles/rebuild_cache.dir

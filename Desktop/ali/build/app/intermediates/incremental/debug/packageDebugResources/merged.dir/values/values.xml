@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">368312545750</string>
+    <string name="google_api_key" translatable="false">AIzaSyCByIVh1G8ZPRPkOe2dfrP6_ufXUAEbc_w</string>
+    <string name="google_app_id" translatable="false">1:368312545750:android:6331ce2f0b053d3b8af477</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCByIVh1G8ZPRPkOe2dfrP6_ufXUAEbc_w</string>
+    <string name="google_storage_bucket" translatable="false">midypoint-app.firebasestorage.app</string>
+    <string name="project_id" translatable="false">midypoint-app</string>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

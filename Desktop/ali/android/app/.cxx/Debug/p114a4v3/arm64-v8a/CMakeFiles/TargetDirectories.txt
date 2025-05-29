@@ -1,0 +1,2 @@
+C:/Users/aliya/Desktop/ali/android/app/.cxx/Debug/p114a4v3/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/aliya/Desktop/ali/android/app/.cxx/Debug/p114a4v3/arm64-v8a/CMakeFiles/rebuild_cache.dir
