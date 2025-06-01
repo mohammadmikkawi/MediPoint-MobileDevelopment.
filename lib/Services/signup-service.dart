@@ -9,6 +9,7 @@ class SignupService {
 int phoneNumber;
 String password;
 String checkPassword;
+String?uid;
 
 SignupService({required this.name,required this.email,required this.phoneNumber, required this.password,required this.checkPassword});
 
@@ -39,7 +40,6 @@ else{
   }
 
 bool ?checkPasswordEquility(){
-
   if (password==checkPassword){
     return true;
   }
@@ -56,7 +56,15 @@ a.recive();
     print("data is sent");
    await a.CreatAccount();
     await a.sendDataToDB();
-    return true;
+ uid=a.getUid();
+
+if(uid!=null){
+   print(uid);
+   return true;
+ }
+else{
+  return false;
+ }
   }
   catch(e){
     print("error of sending");

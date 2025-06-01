@@ -3,6 +3,8 @@ import 'package:training_1/Services/login-service.dart';
 import 'package:training_1/Widgets/WelcomePage.dart';
 import 'package:training_1/Widgets/forgetpassword.dart';
 import 'Signup.dart';
+import 'package:training_1/Services//auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class Titleofpage2 extends StatelessWidget{
   @override
@@ -110,12 +112,17 @@ Button("Log in",500,
       loginn.checkPassword2();
 print("Processing Done!");
 
-loginn.SendDataToLoginAutherSarver();
-print("Data sent to Auth_login_service");
 
 bool success=await  loginn.SendDataToLoginAutherSarver();
+      print("Data sent to Auth_login_service");
 if(success)
   {
+    String?uid=loginn.uid;
+    if(uid!=null){
+      Provider.of< AuthProvider>(context,listen: false).setUid(uid);
+      print("uid saved in provider.");
+    }
+
     Navigator.push(context,//مكاني الحالي
       MaterialPageRoute(builder:(context)=>WelcomPage()),
     );
@@ -130,7 +137,7 @@ else{
     }
     catch(e){
       ScaffoldMessenger.of(context).showSnackBar(
-SnackBar(content:Text("Check your email or password.")
+SnackBar(content:Text("Check Your Email Or Password Or Your Secure Code.")
           )
       );
     }

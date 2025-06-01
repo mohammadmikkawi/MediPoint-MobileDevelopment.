@@ -15,7 +15,6 @@ class AuthServer{
 
 
   void  recive(){
-
     //CHECKING And Reading
 print (namee);
 print(emaill);
@@ -31,7 +30,6 @@ Future<void>CreatAccount() async {
     UID=userCredential.user?.uid;
     print("Account Created!");
   }
-
    catch (e) {
     throw Exception("Error to Create Account");
 
@@ -53,11 +51,18 @@ Future<void>CreatAccount() async {
           'uid': UID,
         });
 
+
+
         print("User data saved to Firestore!");
 
     } catch (e) {
       print("Error sending data to Firestore: $e");
     }
+
   }
+
+  String? getUid(){
+ return UID;
+}
 
 }

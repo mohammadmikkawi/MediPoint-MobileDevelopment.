@@ -9,6 +9,7 @@ class LoginService{
   String email;
   String password;
 String code;
+String ?uid;
 
   LoginService(this.email,this.password,this.code );
 
@@ -47,7 +48,11 @@ Future<bool>SendDataToLoginAutherSarver()async
  AuthServiceLogin authServiceLogin=AuthServiceLogin(email, password,code);
  authServiceLogin.checkDB();
 
- bool result =await authServiceLogin.login();
- return result;
+ bool result1 =await authServiceLogin.login();
+
+if (result1){
+uid =authServiceLogin.getUid();
+}
+return result1;
 }
 }

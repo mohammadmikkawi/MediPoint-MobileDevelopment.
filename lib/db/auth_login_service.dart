@@ -10,6 +10,7 @@ class AuthServiceLogin{
   String  emailDB;
   String  passwordDB;
   String key;
+String? uid;
 
   AuthServiceLogin(this.emailDB,this.passwordDB,this.key);
 
@@ -30,17 +31,20 @@ class AuthServiceLogin{
     }
 }
 
-Future<bool>login()async{
-try {
-  await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailDB, password: passwordDB);
-return true;
+  Future<bool> login() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailDB, password: passwordDB,);
 
-}
-catch(e){
-return false;
-}
+      uid = userCredential.user?.uid;
+      return true;
 
+    } catch (e) {
+      uid = null;
+      return false;
+    }
+  }
 
-}
+  String? getUid() {
+    return uid;
+  }
 }

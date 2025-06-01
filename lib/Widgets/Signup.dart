@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:training_1/Services/signup-service.dart';
 import 'package:training_1/Widgets/login.dart';
 import 'package:flutter/services.dart';
 import 'package:training_1/db/auth_service.dart';
+import 'package:training_1/Services//auth_provider.dart';
+import 'package:provider/provider.dart';
 
 //Widget 1
 class Titleofpage extends StatelessWidget{
@@ -241,6 +244,10 @@ print("Processing Is Done!");
 
    bool success =await service.sendDatatoAuthServes();
    if(success){
+     String ?uid=service.uid;
+if(uid!=null){
+  Provider.of< AuthProvider>(context,listen: false).setUid(uid);
+}
 ScaffoldMessenger.of(context).showSnackBar(
   SnackBar(
       content: Text("Account is created Successfully"),
