@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:training_1/Widgets/login.dart';
-import 'package:training_1/Widgets/Signup.dart';
-import 'package:training_1/Widgets/WelcomePage.dart';
-import 'package:training_1/Widgets/forgetpassword.dart';
 import 'package:provider/provider.dart';
 import 'package:training_1/Services/auth_provider.dart';
-import 'dart:io' show Platform;
+import 'package:training_1/Widgets/WelcomePage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
  WidgetsFlutterBinding.ensureInitialized();
 
  if (kIsWeb) {
-
   await Firebase.initializeApp(
    options: FirebaseOptions(
     apiKey: "AIzaSyBCvkW9SXsftPiFkePDuj6XM29dzmpOhsU",
@@ -25,20 +20,27 @@ void main() async {
     measurementId: "G-CBERGVPSW4",
    ),
   );
-
  } else {
-
   await Firebase.initializeApp();
  }
 
  runApp(
-  MultiProvider(
-   providers: [
-    ChangeNotifierProvider(create: (_) => AuthProvider()),
-   ],
-   child: MaterialApp(
-    home: WelcomPage(),
-   ),
+  ChangeNotifierProvider(
+   create: (_) => AuthProvider(),
+   child: const MyApp(),
   ),
  );
+}
+
+class MyApp extends StatelessWidget {
+ const MyApp({super.key});
+
+ @override
+ Widget build(BuildContext context) {
+  return MaterialApp(
+   title: 'MidyPoint App',
+   debugShowCheckedModeBanner: false,
+   home: WelcomPage(),
+  );
+ }
 }

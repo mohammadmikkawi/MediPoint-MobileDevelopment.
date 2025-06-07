@@ -21,8 +21,6 @@ String? uid;
 
     const doctorCode="0000";
     if(key !=doctorCode){
-
-
       throw Exception("The key is not correct");
 
     }
@@ -39,6 +37,7 @@ String? uid;
       return true;
 
     } catch (e) {
+      print("Login failed with error: $e");
       uid = null;
       return false;
     }

@@ -14,9 +14,9 @@ String?uid;
 SignupService({required this.name,required this.email,required this.phoneNumber, required this.password,required this.checkPassword});
 
   bool notNull() {
-    if (name == null || name!.isEmpty ||
-        email == null || email!.isEmpty ||
-        password == null || password!.isEmpty ) {
+    if ( name.isEmpty ||
+         email.isEmpty ||
+        password.isEmpty ) {
       return false;
     }
     return true;
@@ -25,47 +25,29 @@ SignupService({required this.name,required this.email,required this.phoneNumber,
 
   bool checkEmail()
   {
-if (email.contains('@')&&email.contains('.')){
-  return true;
-}
-else{
-  throw Exception("Email not correct");
-}
+ return email.contains('@')&&email.contains('.');
 }
 
- void checkPassword2() {
-    if (password.length>9){
-      throw Exception("the password must be 6 letters  or less");
+bool checkPassword2() {
+    return password.length>=8;
     }
-  }
 
-bool ?checkPasswordEquility(){
-  if (password==checkPassword){
-    return true;
-  }
-  else{
-    throw Exception("not equal");
-  }
+
+bool checkPasswordEquility(){
+return password==checkPassword;
 }
 
 Future<bool> sendDatatoAuthServes()async{
   AuthServer a=AuthServer(name,email,phoneNumber,password);
   try {
-  //send
-a.recive();
+    //send
+    a.recive();
     print("data is sent");
-   await a.CreatAccount();
+    await a.CreatAccount();
     await a.sendDataToDB();
- uid=a.getUid();
-
-if(uid!=null){
-   print(uid);
-   return true;
- }
-else{
-  return false;
- }
+    return true;
   }
+
   catch(e){
     print("error of sending");
     return false;

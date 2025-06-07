@@ -6,6 +6,8 @@ import 'Signup.dart';
 import 'package:training_1/Services//auth_provider.dart';
 import 'package:provider/provider.dart';
 
+
+
 class Titleofpage2 extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,9 @@ class Text2 extends StatelessWidget{
 
 
 class Doyouforgetyourpassword extends StatelessWidget{
-  @override
-   String num5;
+  final String num5;
   final Widget page;
+  @override
   Doyouforgetyourpassword(this.num5,this.page);
 
   Widget build(BuildContext context) {
@@ -71,6 +73,9 @@ final TextEditingController _codeController=TextEditingController();
         body:Stack(
           children: [
             SingleChildScrollView(
+              padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              ),
             child: Column(
             children: [
               SizedBox(height: 5,),
@@ -96,37 +101,53 @@ Button("Log in",500,
      String securecode=_codeController.text;
 
       LoginService loginn = LoginService(emailLog, passwordLog,securecode);
-      bool tery3=loginn.notNull();
 
-      if(!tery3){
+
+      if(! loginn.notNull()){
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("The empty value is invalid."),
               backgroundColor:Colors.red,
             )
         );
+        return false;
       }
       print("data sent");
-      loginn.notNull();
-      loginn.checkEmail();
-      loginn.checkPassword2();
+
+
+
+      if( !loginn.checkEmail()){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Email is not correct"), backgroundColor: Colors.red),
+        );
+        return false;
+      }
+
+      if(!loginn.checkPassword2()){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Password must be at least 8 characters."), backgroundColor: Colors.red),
+        );
+        return false;
+      }
 print("Processing Done!");
 
 
 bool success=await  loginn.SendDataToLoginAutherSarver();
       print("Data sent to Auth_login_service");
-if(success)
-  {
-    String?uid=loginn.uid;
-    if(uid!=null){
-      Provider.of< AuthProvider>(context,listen: false).setUid(uid);
-      print("uid saved in provider.");
-    }
 
-    Navigator.push(context,//مكاني الحالي
-      MaterialPageRoute(builder:(context)=>WelcomPage()),
-    );
-  }
+if(success) {
+ // String? providerState = loginn.getUid();
+  //if (providerState != null)
+
+   // final authProvider = Provider.of<AuthProvider>(context, listen: false);
+   // authProvider.setUid(providerState);
+   //print("uid saved in provider.");
+
+  Navigator.push
+    (context, //مكاني الحالي
+    MaterialPageRoute(builder: (context) => WelcomPage()),
+  );
+}
 else{
   ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Login Field"),
@@ -137,7 +158,8 @@ else{
     }
     catch(e){
       ScaffoldMessenger.of(context).showSnackBar(
-SnackBar(content:Text("Check Your Email Or Password Or Your Secure Code.")
+
+SnackBar(content:Text("Login failed with error: $e")
           )
       );
     }

@@ -31,17 +31,19 @@ Future<void>CreatAccount() async {
     print("Account Created!");
   }
    catch (e) {
-    throw Exception("Error to Create Account");
-
+   print("Error to Create Account");
+throw Exception("Error to create Account");
   }
 }
 
   Future<void> sendDataToDB() async {
-    try {
-      if(UID==null){
-        print("do you forget creating account?");
-      }
 
+   if (UID==null) {
+     print("do you forget creating account?");
+     throw Exception("UID IS NULL");
+   }
+
+   try{
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
         await firestore.collection("users").doc(UID).set({
@@ -51,18 +53,10 @@ Future<void>CreatAccount() async {
           'uid': UID,
         });
 
-
-
         print("User data saved to Firestore!");
-
     } catch (e) {
       print("Error sending data to Firestore: $e");
+      throw Exception("Error to send data to fire base.");
     }
-
   }
-
-  String? getUid(){
- return UID;
-}
-
 }

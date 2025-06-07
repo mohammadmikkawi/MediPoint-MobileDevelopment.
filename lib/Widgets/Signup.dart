@@ -157,30 +157,30 @@ Image.asset('assets/google.png'),
 }
 
 
- class Flowbutton extends StatelessWidget{
+class Flowbutton extends StatelessWidget{
   final Widget keey;
   String titlee;
-double num6;
-double num7;
- Flowbutton(this.keey,this.titlee,this.num6,this.num7);
+  double num6;
+  double num7;
+  Flowbutton(this.keey,this.titlee,this.num6,this.num7);
   @override
   Widget build(BuildContext context) {
- return  Container(
-   width: num7,
-   child:ElevatedButton(onPressed:(){
-Navigator.push(context,//الحالي
-    MaterialPageRoute(builder: (context) =>keey));
-   },
-style: ElevatedButton.styleFrom(
-  backgroundColor: Color(0xFF0077B6)
-),
-       child:Text(titlee,
-         style:TextStyle(
-           fontSize: num6,
-           color:Colors.white,
-           fontWeight: FontWeight.bold
-         )) ),
- );
+    return  Container(
+      width: num7,
+      child:ElevatedButton(onPressed:(){
+        Navigator.push(context,//الحالي
+            MaterialPageRoute(builder: (context) =>keey));
+      },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF0077B6)
+          ),
+          child:Text(titlee,
+              style:TextStyle(
+                  fontSize: num6,
+                  color:Colors.white,
+                  fontWeight: FontWeight.bold
+              )) ),
+    );
 
   }
 }
@@ -197,10 +197,18 @@ class Signup extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:Column(
+      resizeToAvoidBottomInset: true,
+        body:SafeArea(
+          child: SingleChildScrollView(
+   child: Padding(
+     padding: const EdgeInsets.only(bottom: 20),
+              child:Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+
           children: [
+            SizedBox(height: 1,),
             Titleofpage(),
-            Logo(170,150),
+            Logo(150,150),
             SizedBox(height: 1,),
             Field(hinttext: "Full Name",controller:_fullNameController),
             SizedBox(height: 12,),
@@ -227,51 +235,69 @@ class Signup extends StatelessWidget{
 
                 SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
                 //processing steps
-
-               bool tery2= service.notNull();
-               if(!tery2){
+               if(!service.notNull()){
                  ScaffoldMessenger.of(context).showSnackBar(
                      SnackBar(
                        content: Text("The empty value is invalid."),
                        backgroundColor:Colors.red,
                      )
                  );
+                 return false;
                }
-                service.checkPasswordEquility();
-                service.checkPassword;
-                service.checkEmail();
+
+                if( !service.checkEmail()){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Email is not correct"), backgroundColor: Colors.red),
+                  );
+                  return false;
+                }
+
+                if(!service.checkPassword2()){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Password must be at least 8 characters."), backgroundColor: Colors.red),
+                  );
+                  return false;
+                }
+
+                if(! service.checkPasswordEquility()){
+                 ScaffoldMessenger.of(context).showSnackBar(
+                   SnackBar(content: Text("Password do not match."), backgroundColor: Colors.red),
+                 );
+                 return false;
+               }
 print("Processing Is Done!");
 
-   bool success =await service.sendDatatoAuthServes();
-   if(success){
-     String ?uid=service.uid;
-if(uid!=null){
-  Provider.of< AuthProvider>(context,listen: false).setUid(uid);
-}
-ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
-      content: Text("Account is created Successfully"),
-backgroundColor:Colors.green,
-  )
-);
-   }
-   else{
-     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(content: Text("Account Not created"),
-       backgroundColor: Colors.red,
-     )
-     );
-   }
-              }
 
+
+   bool success =await service.sendDatatoAuthServes();
+   if(success) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+    content: Text("Account is created Successfully"),
+    backgroundColor: Colors.green,
+    )
+    );
+
+    }
+     else {
+       ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text("Account Not created"),
+             backgroundColor: Colors.red,
+           )
+       );
+     }
+   }
               catch(e){
+                print("Error during signup: $e");
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Please fill all fields or check your email.")),
-
                 );
               }
-            }
+
+              }
+
               ,),
+
             SizedBox(height: 6,),
             ortext(),
             SizedBox(height: 5,),
@@ -279,8 +305,11 @@ backgroundColor:Colors.green,
             SizedBox(height: 5,),
             icons(),
             SizedBox(height: 2,),
-            Flowbutton(Login(),"Log in Page",15,200),
+            Flowbutton( Login(), "Login", 20, 200)
           ],
+          )
+        )
+    )
         )
     );
   }

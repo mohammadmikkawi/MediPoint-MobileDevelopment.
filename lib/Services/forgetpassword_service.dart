@@ -18,27 +18,22 @@ class ForgetPasswordService{
     print (emailFP);
   }
 
-bool notNull() {
-    if (emailFP == null ||emailFP!.isEmpty )
+  bool notNull() {
+    if (emailFP.isEmpty )
     {
-return false;
-      }
-
-    else {
+      return false;
+    }
+    else{
       return true;
     }
-    }
+  }
 
 
   bool checkEmail()
   {
-    if (emailFP.contains('@')&&emailFP.contains('.')){
-      return true;
-    }
-    else{
-      throw Exception("Email not correct");
-    }
+    return emailFP.contains('@')&&emailFP.contains('.');
   }
+
 
 Future<bool>sendDt ()async{
     AuthServiceForgetPassword authServiceForgetPassword=AuthServiceForgetPassword(emailFP);

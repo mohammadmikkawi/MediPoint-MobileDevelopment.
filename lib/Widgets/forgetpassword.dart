@@ -61,7 +61,24 @@ bool tery= forgetpassword.notNull();
     }
     forgetpassword.Cheked();
     print("Data Sent!");
-    forgetpassword.checkEmail();
+
+
+    if(!forgetpassword.checkEmail()){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Email is not correct"), backgroundColor: Colors.red),
+      );
+      return false;
+    }
+
+    if(! forgetpassword.notNull()){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("The empty value is invalid."),
+            backgroundColor:Colors.red,
+          )
+      );
+      return false;
+    }
     print("Data Processed!");
 
 bool tery4=await forgetpassword.sendDt();
@@ -93,6 +110,5 @@ Doyouforgetyourpassword("Log in Page",Login()),
   ],
 )
 );
-
   }
  }

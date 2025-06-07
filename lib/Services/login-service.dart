@@ -15,8 +15,8 @@ String ?uid;
 
 
   bool notNull() {
-    if (email == null || email!.isEmpty ||
-        password == null || password!.isEmpty ||code==null || code!.isEmpty)
+    if (email.isEmpty ||
+        password.isEmpty || code.isEmpty)
     {
       return false;
     }
@@ -25,24 +25,18 @@ String ?uid;
     }
   }
 
+
   bool checkEmail()
   {
-    if (email.contains('@')&&email.contains('.')){
-      return true;
-    }
-    else{
-      throw Exception("Email not correct");
-    }
+    return email.contains('@')&&email.contains('.');
   }
-  void checkPassword2() {
-    if (password.length>9){
-      throw Exception("the password must be 6 letters  or less");
-    }
+
+  bool checkPassword2() {
+    return password.length>=8;
   }
 
 
-
-Future<bool>SendDataToLoginAutherSarver()async
+  Future<bool>SendDataToLoginAutherSarver()async
 {
 
  AuthServiceLogin authServiceLogin=AuthServiceLogin(email, password,code);
@@ -53,6 +47,14 @@ Future<bool>SendDataToLoginAutherSarver()async
 if (result1){
 uid =authServiceLogin.getUid();
 }
+
 return result1;
+
+
 }
+
+  getUid(){
+    return uid;
+  }
+
 }
