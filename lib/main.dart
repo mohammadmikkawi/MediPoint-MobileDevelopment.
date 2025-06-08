@@ -20,7 +20,9 @@ void main() async {
     measurementId: "G-CBERGVPSW4",
    ),
   );
- } else {
+
+ }
+ else {
   await Firebase.initializeApp();
  }
 

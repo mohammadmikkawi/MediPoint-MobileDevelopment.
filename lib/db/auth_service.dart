@@ -54,6 +54,7 @@ throw Exception("Error to create Account");
         });
 
         print("User data saved to Firestore!");
+
     } catch (e) {
       print("Error sending data to Firestore: $e");
       throw Exception("Error to send data to fire base.");

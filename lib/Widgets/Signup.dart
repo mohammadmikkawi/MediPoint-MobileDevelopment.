@@ -187,7 +187,7 @@ class Flowbutton extends StatelessWidget{
 
 
 //Main Feature
-class Signup extends StatelessWidget{
+class Signup extends StatelessWidget {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -198,119 +198,137 @@ class Signup extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-        body:SafeArea(
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
-   child: Padding(
-     padding: const EdgeInsets.only(bottom: 20),
-              child:Column(
+            reverse: true,
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              top: 8,
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Titleofpage(),
+                Logo(150, 150),
+                SizedBox(height: 8),
+                Field(hinttext: "Full Name", controller: _fullNameController),
+                SizedBox(height: 12),
+                Field(hinttext: "Enter Your Email", controller: _emailController),
+                SizedBox(height: 12),
+                Field(hinttext: "Enter Your Phone Number", controller: _phoneController),
+                SizedBox(height: 12),
+                Field(hinttext: "Enter Your Password", controller: _passwordController),
+                SizedBox(height: 12),
+                Field(hinttext: "Confirm Password", controller: _confirmPasswordController),
+                SizedBox(height: 20),
+                Button(
+                  "Sign Up",
+                  200,
+                  onPressed: () async {
+                    try {
+                      String fullName = _fullNameController.text;
+                      String email2 = _emailController.text;
+                      String phone2 = _phoneController.text;
+                      int phone = int.parse(phone2);
+                      String password2 = _passwordController.text;
+                      String password3 = _confirmPasswordController.text;
 
-          children: [
-            SizedBox(height: 1,),
-            Titleofpage(),
-            Logo(150,150),
-            SizedBox(height: 1,),
-            Field(hinttext: "Full Name",controller:_fullNameController),
-            SizedBox(height: 12,),
-            Field(hinttext: "Enter Your Email",controller:_emailController ,),
-            SizedBox(height: 12,),
-            Field(hinttext: "Enter Your Phone Number",controller: _phoneController,),
-            SizedBox(height: 12,),
-            Field(hinttext: "Enter Your Password",controller: _passwordController,),
-            SizedBox(height: 12,),
-            Field(hinttext: "Confirm Password",controller: _confirmPasswordController,),
-            SizedBox(height: 20,),
+                      SignupService service = SignupService(
+                        name: fullName,
+                        email: email2,
+                        phoneNumber: phone,
+                        password: password2,
+                        checkPassword: password3,
+                      );
 
+                      if (!service.notNull()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("The empty value is invalid."),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
 
-            Button("Sign Up", 200,
-              onPressed:() async {
-              try {
+                      if (!service.checkEmail()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Email is not correct"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
 
-                String fullName = _fullNameController.text;
-                String email2=_emailController.text;
-                String phone2=_phoneController.text;
-                int phone=int.parse(phone2);
-                String password2=_passwordController.text;
-                String password3=_confirmPasswordController.text;
+                      if (!service.checkPassword2()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Password must be at least 8 characters."),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
 
-                SignupService service=SignupService(name: fullName, email: email2, phoneNumber: phone, password: password2,checkPassword: password3);
-                //processing steps
-               if(!service.notNull()){
-                 ScaffoldMessenger.of(context).showSnackBar(
-                     SnackBar(
-                       content: Text("The empty value is invalid."),
-                       backgroundColor:Colors.red,
-                     )
-                 );
-                 return false;
-               }
+                      if (!service.checkPasswordEquility()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Password do not match."),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
+                      print("Processing Is Done!");
 
-                if( !service.checkEmail()){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Email is not correct"), backgroundColor: Colors.red),
-                  );
-                  return false;
-                }
+                      bool success = await service.sendDatatoAuthServes();
+                      if (success) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Account is created Successfully"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Account Not created"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      print("Error during signup: $e");
 
-                if(!service.checkPassword2()){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Password must be at least 8 characters."), backgroundColor: Colors.red),
-                  );
-                  return false;
-                }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Please fill all fields."),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                ),
 
-                if(! service.checkPasswordEquility()){
-                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(content: Text("Password do not match."), backgroundColor: Colors.red),
-                 );
-                 return false;
-               }
-print("Processing Is Done!");
+                SizedBox(height: 12),
+                ortext(),
+                SizedBox(height: 4),
+                Signupwithtext(),
+                SizedBox(height: 4),
+                icons(),
+                SizedBox(height: 16),
+                Flowbutton(Login(), "Login", 20, 200),
 
-
-
-   bool success =await service.sendDatatoAuthServes();
-   if(success) {
-    ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-    content: Text("Account is created Successfully"),
-    backgroundColor: Colors.green,
-    )
-    );
-
-    }
-     else {
-       ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text("Account Not created"),
-             backgroundColor: Colors.red,
-           )
-       );
-     }
-   }
-              catch(e){
-                print("Error during signup: $e");
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Please fill all fields or check your email.")),
-                );
-              }
-
-              }
-
-              ,),
-
-            SizedBox(height: 6,),
-            ortext(),
-            SizedBox(height: 5,),
-            Signupwithtext(),
-            SizedBox(height: 5,),
-            icons(),
-            SizedBox(height: 2,),
-            Flowbutton( Login(), "Login", 20, 200)
-          ],
-          )
-        )
-    )
-        )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

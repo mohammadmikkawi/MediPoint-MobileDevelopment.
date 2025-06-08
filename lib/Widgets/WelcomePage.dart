@@ -6,16 +6,16 @@ class Introduction extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 return Text(
-  "Welcome! Are You Logging In As A Doctor Or A Patient?",
+  "Welcome! Are you Patient Or Doctor? "
+,
     style: TextStyle(
-    fontSize: 15,
+    fontSize: 20,
   fontWeight: FontWeight.bold,
       color: Colors.black,
     )
 );
   }
 }
-
 
 class WelcomPage extends StatelessWidget {
   @override
