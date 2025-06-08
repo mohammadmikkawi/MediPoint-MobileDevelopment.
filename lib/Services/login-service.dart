@@ -8,12 +8,7 @@ class LoginService {
   LoginService(this.email, this.password, this.code);
 
   bool notNull() {
-    if (email == null ||
-        email!.isEmpty ||
-        password == null ||
-        password!.isEmpty ||
-        code == null ||
-        code!.isEmpty) {
+    if (email.isEmpty || password.isEmpty || code.isEmpty) {
       return false;
     } else {
       return true;

@@ -58,21 +58,31 @@ class _HomepageState extends State<Homepage_p> {
           isLoading
               ? const Center(child: CircularProgressIndicator())
               : SafeArea(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      buildHeader(),
-                      const SizedBox(height: 20),
-                      buildDoctorSection(),
-                      const SizedBox(height: 16),
-                      buildBanner(),
-                      const SizedBox(height: 10),
-                      buildPageIndicators(),
-                      const SizedBox(height: 20),
-                      buildInfoCards(),
-                      const SizedBox(height: 30),
-                    ],
-                  ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 80,
+                        ), // منع overflow
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildHeader(),
+                            const SizedBox(height: 20),
+                            buildDoctorSection(),
+                            const SizedBox(height: 16),
+                            buildBanner(),
+                            const SizedBox(height: 10),
+                            buildPageIndicators(),
+                            const SizedBox(height: 20),
+                            buildInfoCards(),
+                            const SizedBox(height: 30),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
       bottomNavigationBar: buildBottomNav(),
@@ -346,12 +356,16 @@ class _HomepageState extends State<Homepage_p> {
   }
 
   Widget buildInfoCards() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        infoCard('Weight', '55kg', Icons.monitor_weight),
-        infoCard('Height', '160cm', Icons.height),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          infoCard('Weight', '55kg', Icons.monitor_weight),
+          const SizedBox(width: 16),
+          infoCard('Height', '160cm', Icons.height),
+        ],
+      ),
     );
   }
 

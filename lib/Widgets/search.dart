@@ -50,123 +50,139 @@ class _DoctorsGridPageState extends State<DoctorsGridPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: Color(0xFF0277BD),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage('assets/Profile.png'),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        name == 'Guest' ? 'Hello Guest' : 'Hello Dr. $name',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF0277BD),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
                         ),
                       ),
-                      const Spacer(),
-                      const Icon(Icons.notifications_none, color: Colors.black),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'How Are You\nFeeling Today?',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0288D1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextField(
-                      onChanged: (val) {
-                        setState(() {
-                          searchText = val.toLowerCase();
-                          filteredDoctors =
-                              doctors
-                                  .where(
-                                    (doc) => (doc['name'] ?? '')
-                                        .toLowerCase()
-                                        .contains(searchText),
-                                  )
-                                  .toList();
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Search',
-                        hintStyle: TextStyle(color: Colors.black),
-                        border: InputBorder.none,
-                        icon: Icon(Icons.search, color: Colors.black),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const CircleAvatar(
+                                backgroundImage: AssetImage(
+                                  'assets/Profile.png',
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                name == 'Guest'
+                                    ? 'Hello Guest'
+                                    : 'Hello Dr. $name',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const Spacer(),
+                              const Icon(
+                                Icons.notifications_none,
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'How Are You\nFeeling Today?',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF0288D1),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: TextField(
+                              onChanged: (val) {
+                                setState(() {
+                                  searchText = val.toLowerCase();
+                                  filteredDoctors =
+                                      doctors
+                                          .where(
+                                            (doc) => (doc['name'] ?? '')
+                                                .toLowerCase()
+                                                .contains(searchText),
+                                          )
+                                          .toList();
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                hintText: 'Search',
+                                hintStyle: TextStyle(color: Colors.black),
+                                border: InputBorder.none,
+                                icon: Icon(Icons.search, color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: const [
-                  Spacer(),
-                  Icon(Icons.filter_alt_outlined, size: 20),
-                  SizedBox(width: 4),
-                  Text("Filter"),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                child: GridView.builder(
-                  itemCount: filteredDoctors.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 0.74,
-                  ),
-                  itemBuilder: (context, index) {
-                    final doctor = filteredDoctors[index];
-                    final String name = doctor['name'] ?? 'un';
-                    final String imagePath =
-                        doctor['image'] ?? 'assets/doctor.png';
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: const [
+                          Spacer(),
+                          Icon(Icons.filter_alt_outlined, size: 20),
+                          SizedBox(width: 4),
+                          Text("Filter"),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: filteredDoctors.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 0.74,
+                            ),
+                        itemBuilder: (context, index) {
+                          final doctor = filteredDoctors[index];
+                          final String name = doctor['name'] ?? 'un';
+                          final String imagePath =
+                              doctor['image'] ?? 'assets/doctor.png';
 
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => DoctorProfilePage(
-                                  uid: doctor['uid']!,
-                                  imagePath: imagePath,
-                                  name: name,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => DoctorProfilePage(
+                                        uid: doctor['uid']!,
+                                        imagePath: imagePath,
+                                        name: name,
+                                      ),
                                 ),
-                          ),
-                        );
-                      },
-                      child: DoctorCard(name: name, imagePath: imagePath),
-                    );
-                  },
+                              );
+                            },
+                            child: DoctorCard(name: name, imagePath: imagePath),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

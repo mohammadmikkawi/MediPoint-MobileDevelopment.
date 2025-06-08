@@ -136,10 +136,11 @@ class DoctorProfileWidget extends StatelessWidget {
           Container(
             height: 250,
             decoration: BoxDecoration(
+              color: const Color(0xFF145A86),
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
                 image: AssetImage(imagePath),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
           ),
@@ -342,7 +343,7 @@ class DoctorProfileWidget extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1979A9),
+              backgroundColor: const Color(0xFF145A86),
               minimumSize: const Size(double.infinity, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
